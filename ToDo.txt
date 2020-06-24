@@ -1,10 +1,14 @@
 To-Do
 -------------------
-1. 
+1.
 -------------------
-2. 
+2.
 -------------------
-3. 
+3.
 -------------------
 4.
 -------------------
+
+
+NOTES
++ https://stackoverflow.com/questions/3738752/opening-a-terminal-from-linux-makefile
