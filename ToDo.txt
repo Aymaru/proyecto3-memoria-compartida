@@ -1,6 +1,19 @@
 To-Do
 -------------------
-1.
+1. #include <sys/ipc.h>
+   #include <sys/shm.h>
+   #include <sys/mmap.h>
+   #include <pthread.h> 
+   #include <semaphore.h> 
+   #include <sys/mman.h>
+   #include <sys/types.h>
+   #include <fcntl.h>
+
+   http://csweb.cs.wfu.edu/~torgerse/Kokua/More_SGI/007-2478-008/sgi_html/ch03.html
+   http://csweb.cs.wfu.edu/~torgerse/Kokua/More_SGI/007-2478-008/sgi_html/ch01.html#id54272
+   https://www.geeksforgeeks.org/use-posix-semaphores-c/
+   https://stackoverflow.com/questions/5656530/how-to-use-shared-memory-with-linux-in-c
+
 -------------------
 2.
 -------------------
