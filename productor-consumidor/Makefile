@@ -5,8 +5,9 @@ cli_exec:
 	gcc -o finalizador.o finalizador.c
 	## ejecutar en conjunto
 
-creador:
-	gcc -o creador.o creador.c
+creator:
+	gcc -o creator.o creator.c
+	##./creator.o
 	## Compliar y ejecutar creador
 
 productor:
