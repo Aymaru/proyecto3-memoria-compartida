@@ -3,7 +3,11 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <sys/mman.h>
 #include <string.h>
+#include <unistd.h>
+
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <fcntl.h>
 
 #endif
