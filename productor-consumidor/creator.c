@@ -86,19 +86,19 @@ int main(int argc, char *argv[]) {
   print_buffer_status(shm_buffer);
 
   tmp_msg = get_msg(shm_buffer,&msg_index);
-  printf("Mensaje leido del indice %d.\nLos valores del mensaje son:\nId del productor: %d\nKey: %d\n\n",msg_index,tmp_msg->id_producer,tmp_msg->key);
+  print_message(tmp_msg,msg_index);
   free(tmp_msg);
 
   print_buffer_status(shm_buffer);
 
   tmp_msg = get_msg(shm_buffer,&msg_index);
-  printf("Mensaje leido del indice %d.\nLos valores del mensaje son:\nId del productor: %d\nKey: %d\n\n",msg_index,tmp_msg->id_producer,tmp_msg->key);
+  print_message(tmp_msg,msg_index);
   free(tmp_msg);
 
   print_buffer_status(shm_buffer);
 
   tmp_msg = get_msg(shm_buffer,&msg_index);
-  printf("Mensaje leido del indice %d.\nLos valores del mensaje son:\nId del productor: %d\nKey: %d\n\n",msg_index,tmp_msg->id_producer,tmp_msg->key);
+  print_message(tmp_msg,msg_index);
   free(tmp_msg);
 
   print_buffer_status(shm_buffer);

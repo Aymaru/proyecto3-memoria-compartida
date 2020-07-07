@@ -79,6 +79,16 @@ void print_buffer_status(struct buffer_t * buff) {
     printf("Cantidad de productores activos: %d.\n", buff->n_producers);
     printf("Cantidad de consumidores activos: %d.\n\n", buff->n_consumers);
 };
+
+void print_message(struct message_t * msg, int msg_index) {
+    printf("Informacion del mensaje:\n");
+    printf("Leido del indice %d del buffer.\n",msg_index); //Se le puede sumar 1, para mostrar los indices empezando desde 1 y no desde 0. Se ve mas bonito ????
+    printf("Id del productor: %d\n",msg->id_producer);
+    printf("Llave aleatoria: %d\n",msg->key);
+    //printf("Fecha: ?", ?msg->date?) // imprimir tiempo, no se como se imprime, me dio pereza buscar
+    printf("\n");
+};
+
 // int isEmpty (struct buffer_t * buff) {
 //     if (buff->n_msgs == 0) {
 //         return 1;

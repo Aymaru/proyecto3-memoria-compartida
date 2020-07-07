@@ -34,4 +34,5 @@ void insert_msg(struct buffer_t * buff, int id_producer, int key); //Agrega un m
 struct message_t * get_msg(struct buffer_t * buff, int * index_msg); //Devuelve el siguiente mensaje del buffer
 
 void print_buffer_status(struct buffer_t * buff);
+void print_message(struct message_t * msg, int msg_index);
 #endif
