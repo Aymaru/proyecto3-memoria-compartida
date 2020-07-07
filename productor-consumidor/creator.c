@@ -102,6 +102,69 @@ int main(int argc, char *argv[]) {
   free(tmp_msg);
 
   print_buffer_status(shm_buffer);
+
+  insert_msg(shm_buffer,11,4);
+  insert_msg(shm_buffer,15,3);
+  insert_msg(shm_buffer,13,2);
+  insert_msg(shm_buffer,14,1);
+
+  print_buffer_status(shm_buffer);
+
+  tmp_msg = get_msg(shm_buffer,&msg_index);
+  print_message(tmp_msg,msg_index);
+  free(tmp_msg);
+
+  print_buffer_status(shm_buffer);
+
+  tmp_msg = get_msg(shm_buffer,&msg_index);
+  print_message(tmp_msg,msg_index);
+  free(tmp_msg);
+
+  print_buffer_status(shm_buffer);
+
+  tmp_msg = get_msg(shm_buffer,&msg_index);
+  print_message(tmp_msg,msg_index);
+  free(tmp_msg);
+
+  print_buffer_status(shm_buffer);
+
+  insert_msg(shm_buffer,27,0);
+  insert_msg(shm_buffer,28,3);
+  insert_msg(shm_buffer,29,2);
+
+  print_buffer_status(shm_buffer);
+
+  tmp_msg = get_msg(shm_buffer,&msg_index);
+  print_message(tmp_msg,msg_index);
+  free(tmp_msg);
+
+  print_buffer_status(shm_buffer);
+
+  tmp_msg = get_msg(shm_buffer,&msg_index);
+  print_message(tmp_msg,msg_index);
+  free(tmp_msg);
+
+  print_buffer_status(shm_buffer);
+
+  tmp_msg = get_msg(shm_buffer,&msg_index);
+  print_message(tmp_msg,msg_index);
+  free(tmp_msg);
+
+  print_buffer_status(shm_buffer);
+
+  tmp_msg = get_msg(shm_buffer,&msg_index);
+  print_message(tmp_msg,msg_index);
+  free(tmp_msg);
+
+  print_buffer_status(shm_buffer);
+
+  tmp_msg = get_msg(shm_buffer,&msg_index);
+  print_message(tmp_msg,msg_index);
+  free(tmp_msg);
+
+  print_buffer_status(shm_buffer);
+
+  
   // fin pruebas
 
   close(fd);                   /*   Close file   */
