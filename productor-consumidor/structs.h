@@ -19,9 +19,8 @@ struct buffer_t {
     struct message_t messages[];
 };
 
-struct buffer_t * init_buffer (size_t array_size); //Define la cantidad de mensajes que tiene el buffer
-// struct node_t * init_node (int id);
-struct message_t * init_msg (int id_producer, int key, time_t time);
+struct buffer_t * init_buffer (size_t array_size); //Reseva memoria para el buffer.
+struct message_t * init_msg (int id_producer, int key, time_t time); //Reserva memoria para un mensaje. Para uso del consumidor.
 
 int isEmpty(struct buffer_t * buff); //Devuelve 1 si no hay mensajes en el buffer
 int isFull(struct buffer_t * buff);
@@ -30,7 +29,7 @@ void free_buffer(struct buffer_t * buff); //Libera la memoria reservada para la 
 
 int length(); //Es necesario? puede ser la cantidad de mensajes que permite el buffer, o la cantidad de mensajes que tiene actualmente el buffer
 
-void insert_msg(struct buffer_t * buff, int id_producer, int key); //Agrega un msj al buffer, devuelve la posicion del buffer donde se dejo el mensaje, -1 en caso de error
+void insert_msg(struct buffer_t * buff, int id_producer, int key); //Agrega un msj al buffer
 struct message_t * get_msg(struct buffer_t * buff, int * index_msg); //Devuelve el siguiente mensaje del buffer
 
 void print_buffer_status(struct buffer_t * buff);
