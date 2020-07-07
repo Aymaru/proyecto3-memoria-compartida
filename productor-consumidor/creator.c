@@ -23,13 +23,18 @@
 --------------------------*/
 int main(int argc, char *argv[]) {
   
-  char shm_name[25];
+  char shm_name[25]; //Nombre del segmento de memoria compartida.
+  struct buffer_t * buff,* shm_buffer; //Puntero para inicializar el buffer y puntero para mapear la memoria compartida usando mmap.
+  size_t array_size; //Cantidad de mensajes del buffer
+  int fd; //File descriptor de la memoria compartida
   
   if (argc >= 2) {  
 
     for (int i=1;i<argc;i++) {
       if (strcmp(argv[i],"-s") == 0) { //Option Size
-        printf("size: %s\n", argv[++i]);
+        i++;
+        printf("size: %s\n", argv[i]);
+        array_size = atoi(argv[i]);
 
 
       } else if (strcmp(argv[i],"-n") == 0) { //Option Buffer Name
@@ -47,33 +52,60 @@ int main(int argc, char *argv[]) {
     printf("No sea puto.!\n"); //Si no lo quitamos, es culpa de garita.!
   };
   
-  printf("hola");
-
-  int md;
-  int status;
-  long pg_size;
-  caddr_t virt_addr;
-
+  buff = init_buffer(array_size);
+  
   /* Create shared memory object */
 
-  md = shm_open (shm_name, O_CREAT|O_RDWR, 0);
-  pg_size = 500;
-
-  if((ftruncate(md, pg_size)) == -1){    /* Set the size */
+  fd = shm_open (shm_name, O_CREAT|O_RDWR, 0);
+  
+  if((ftruncate(fd, sizeof(struct buffer_t) + (sizeof(struct message_t) * array_size) )) == -1) {    /* Set the size */
       perror("ftruncate failure");
       exit(1);
   }
                                         
   /* Map one page */
 
-  virt_addr = mmap(0, pg_size, PROT_READ | PROT_WRITE, MAP_SHARED, md, 0);
+  shm_buffer = mmap(0, sizeof(struct buffer_t) + (sizeof(struct message_t) * array_size),
+                    PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
   
-  strcpy(virt_addr,"Escribi en mem compartida\n");
-  printf("shm msg: %s\n",virt_addr);
+  memcpy(shm_buffer,buff,sizeof(struct buffer_t) + (sizeof(struct message_t) * array_size));
+  free_buffer(buff);
+  
+  // pruebas con la memoria compartida, borrar este segmento.
+  struct message_t * tmp_msg;
+  int msg_index;
+  printf("Cantidad max de mensajes: %d\n",shm_buffer->array_size);
 
-  status = munmap(virt_addr, pg_size);  /* Unmap the page */
-  status = close(md);                   /*   Close file   */
-  status = shm_unlink(shm_name);     /* Unlink shared-memory object */
+  print_buffer_status(shm_buffer);
+
+  insert_msg(shm_buffer,1,2);
+  insert_msg(shm_buffer,2,1);
+  insert_msg(shm_buffer,3,4);
+  insert_msg(shm_buffer,4,0);
+
+  print_buffer_status(shm_buffer);
+
+  tmp_msg = get_msg(shm_buffer,&msg_index);
+  printf("Mensaje leido del indice %d.\nLos valores del mensaje son:\nId del productor: %d\nKey: %d\n\n",msg_index,tmp_msg->id_producer,tmp_msg->key);
+  free(tmp_msg);
+
+  print_buffer_status(shm_buffer);
+
+  tmp_msg = get_msg(shm_buffer,&msg_index);
+  printf("Mensaje leido del indice %d.\nLos valores del mensaje son:\nId del productor: %d\nKey: %d\n\n",msg_index,tmp_msg->id_producer,tmp_msg->key);
+  free(tmp_msg);
+
+  print_buffer_status(shm_buffer);
+
+  tmp_msg = get_msg(shm_buffer,&msg_index);
+  printf("Mensaje leido del indice %d.\nLos valores del mensaje son:\nId del productor: %d\nKey: %d\n\n",msg_index,tmp_msg->id_producer,tmp_msg->key);
+  free(tmp_msg);
+
+  print_buffer_status(shm_buffer);
+  // fin pruebas
+
+  close(fd);                   /*   Close file   */
+  shm_unlink(shm_name);     /* Unlink shared-memory object */
 
 
 

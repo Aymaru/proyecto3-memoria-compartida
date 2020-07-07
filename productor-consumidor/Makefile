@@ -6,7 +6,7 @@ cli_exec:
 	## ejecutar en conjunto
 
 creator:
-	gcc -o creator.o creator.c -lrt -pthread
+	gcc -o creator.o creator.c structs.c -lrt -pthread
 	##./creator.o
 	## Compliar y ejecutar creador
 
