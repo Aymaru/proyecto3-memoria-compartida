@@ -18,8 +18,8 @@ struct buffer_t * init_buffer(size_t array_size) {
     buff->n_producers = 0;
     buff->end = 0; // flag to stop all producers and consumers
     for (size_t i = 0; i < array_size; ++i) {
-        buff->messages[i].id_producer = 0;
-        buff->messages[i].key = 0;  
+        buff->messages[i].id_producer = -1;
+        buff->messages[i].key = -1;  
         time(&buff->messages[i].date);
     }
     return buff;
@@ -44,9 +44,9 @@ void free_buffer(struct buffer_t * buff) {
     free(buff);
 };
 
-void insert_msg(struct buffer_t * buff, int id_producer, int key) {
+void insert_msg(struct buffer_t * buff, int id_producer, int key) { //
     int index;
-    index = buff->n_msg_received % buff->array_size;
+    index = buff->n_msg_received % buff->array_size; //calculo el indice
     buff->messages[index].id_producer = id_producer;
     buff->messages[index].key = key;
     time(&buff->messages[index].date);

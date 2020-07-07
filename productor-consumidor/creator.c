@@ -168,7 +168,7 @@ int main(int argc, char *argv[]) {
   // fin pruebas
 
   close(fd);                   /*   Close file   */
-  shm_unlink(shm_name);     /* Unlink shared-memory object */
+  //shm_unlink(shm_name);     /* Unlink shared-memory object */
 
 
 
