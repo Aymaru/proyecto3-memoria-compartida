@@ -42,32 +42,32 @@ int main(int argc, char *argv[]) {
   if ((fd = shm_open (shm_name, O_CREAT|O_EXCL, 0)) == -1) {
     int errsv = errno;
     if (errsv == EEXIST) {
-      printf("Si existe\n");
       if ((fd = shm_open (shm_name, O_RDWR, 0)) == -1) { 
         printf("Error opening shared-memory file descriptor.\n");
         exit(1);
       };
+      //Si no hay un error, se abre la memoria compartida
     } else {
       printf("Error opening shared-memory file descriptor.\n");
       exit(1);
     };
   } else {
-    printf("Error opening shared-memory file descriptor.\n");
+    close(fd);
+    shm_unlink(shm_name);
+    printf("Error shared-memory file doesn't exists.\n");
     exit(1);
   };
   printf("despues de shm open.\n");
-  /* Map one page */
+  
   array_size = mmap(0,sizeof(int),PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-  printf("despues primer mmap.\n");
   size = *array_size;
-
-  printf("declaracion size after.\n");
   munmap(array_size, sizeof(size_t));
-  printf("despues munmap.\n");
+  
   shm_buffer = mmap(0, sizeof(struct buffer_t) + (sizeof(struct message_t) * size),
                     PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-  printf("despues segundo mmap.\n");
-  //sem_wait(&shm_buffer->sem_buffer); //Lock the buffer sem
+  
+  sem_wait(&shm_buffer->sem_buffer); //Lock the buffer sem
+  
   //Critical Region
   print_buffer_status(shm_buffer);
   shm_buffer->end = 1;
@@ -75,8 +75,12 @@ int main(int argc, char *argv[]) {
   print_message(tmp_msg,index);
   free(tmp_msg);
   //End of critical Region
-  //sem_post(&shm_buffer->sem_buffer); //Unlock the buffer sem
-
+  sem_post(&shm_buffer->sem_buffer); //Unlock the buffer sem
+  
+  while(shm_buffer->n_producers != 0 || shm_buffer->n_producers != 0) {
+    sleep(5); // podria esperar 5s cada vez que revisa
+    //Hay que ver como espera el profe las estadisticas del finisher.
+  }; //Espera que se cierren todos los productores y consumidores
   close(fd); //Close shared-memory file descriptor
   shm_unlink(shm_name); //Unlink shared-memory object
 
