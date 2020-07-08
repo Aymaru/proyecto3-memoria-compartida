@@ -15,20 +15,26 @@ int main(int argc, char *argv[]) {
   int fd; //File descriptor de la memoria compartida
   int * array_size;
   size_t size;
-  
-  if (argc >= 2) { 
+
+  if (argc >= 2) {
     for (int i=1;i<argc;i++) {
       if (strcmp(argv[i],"-n") == 0) { //Option Buffer Name
-        i++;
+        if (argv[++i] == NULL){
+          printf("Invalid buffer name. Please input a valid buffer name.\n");
+          exit(0);
+        }
         strcpy(shm_name, argv[i]);
+        //printf("Buffer name: %s\n", shm_name);
       } else { //default
         printf("Invalid Option. Use: ./finisher.o -n [Nombre del buffer].\n");
+        exit(0);
       };
     };
   } else {
-    printf("No sea puto.!\n"); //Si no lo quitamos, es culpa de garita.!
+    printf("Invalid option. Use: ./creator.o -s [Cantidad de Mensajes] -n [Nombre del buffer].\n");
+    exit(0);
   };
-  
+
   /* Open shared memory object */
   struct message_t * tmp_msg;
   int index;
@@ -37,15 +43,15 @@ int main(int argc, char *argv[]) {
     int errsv = errno;
     if (errsv == EEXIST) {
       printf("Si existe\n");
-      if ((fd = shm_open (shm_name, O_RDWR, 0)) == -1) { 
+      if ((fd = shm_open (shm_name, O_RDWR, 0)) == -1) {
         printf("error %s ",strerror(errno));
         printf("Error opening shared-memory file descriptor.\n");
         exit(1);
       };
-  
+
     };
   };
-  printf("despues de shm open.\n");                   
+  printf("despues de shm open.\n");
   /* Map one page */
   array_size = mmap(0,sizeof(int),PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
   printf("despues primer mmap.\n");
@@ -68,7 +74,7 @@ int main(int argc, char *argv[]) {
   //sem_post(&shm_buffer->sem_buffer); //Unlock the buffer sem
 
   close(fd); //Close shared-memory file descriptor
-  shm_unlink(shm_name); //Unlink shared-memory object 
-  
+  shm_unlink(shm_name); //Unlink shared-memory object
+
   return 1;
 }

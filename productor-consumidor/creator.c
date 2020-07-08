@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
 
     for (int i=1;i<argc;i++) {
       if (strcmp(argv[i],"-s") == 0) { //Option Size
-        if ((array_size = atoi(argv[++i])) == 0 || argv[i] == NULL){
+        if (argv[++i] == NULL || (array_size = atoi(argv[i])) == 0){
           printf("Invalid size option. Please input an integer greater than 0.\n");
           exit(0);
         }
