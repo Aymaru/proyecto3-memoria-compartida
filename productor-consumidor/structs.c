@@ -8,9 +8,9 @@ struct buffer_t * init_buffer(size_t array_size) {
         printf("Error allocating memory for buffer\n");
         exit(1);
     };
-    sem_init(&(buff->sem_buffer), 1, 0); //semaforo del buffer, 1 = Es compartido entre procesos heavy weigth, 0 = valor inicial
-    sem_init(&(buff->sem_producer), 1, 0); //semaforo del productor, 1 = Es compartido entre procesos heavy weigth, 0 = valor inicial
-    sem_init(&(buff->sem_consumer), 1, 0); //semaforo del consumidor, 1 = Es compartido entre procesos heavy weigth, 0 = valor inicial
+    sem_init(&(buff->sem_buffer), 1, 1); //semaforo del buffer, 1 = Es compartido entre procesos heavy weigth, 0 = valor inicial
+    sem_init(&(buff->sem_producer), 1, 1); //semaforo del productor, 1 = Es compartido entre procesos heavy weigth, 0 = valor inicial
+    sem_init(&(buff->sem_consumer), 1, 1); //semaforo del consumidor, 1 = Es compartido entre procesos heavy weigth, 0 = valor inicial
     buff->array_size = array_size;
     buff->n_msg_received = 0;
     buff->n_msg_processed = 0;
