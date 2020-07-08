@@ -16,6 +16,8 @@ int main(int argc, char *argv[]) {
   int producer_id,key,waiting_time,index; //Producer info
   time_t date;
 
+  srand(time(0));
+
   if (argc >= 2) {
     for (int i=1;i<argc;i++) {
       if (strcmp(argv[i],"-n") == 0) { //Option Buffer Name
@@ -70,7 +72,7 @@ int main(int argc, char *argv[]) {
     sem_wait(&shm_buffer->sem_buffer); //Lock the buffer sem
     //Critical Region
     if (!isFull(shm_buffer)) {
-      key = 2; //Generar key aleatoria entre 0 y 5
+      key = rand() % 5; //Generar key aleatoria entre 0 y 4  rand() % 5
       insert_msg(shm_buffer,producer_id,key);
       printf("Message inserted in buffer correctly.\n");
       print_buffer_status(shm_buffer);
