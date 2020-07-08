@@ -14,8 +14,9 @@ struct message_t {
 };
 
 struct buffer_t {
+    size_t array_size;
     sem_t sem_producer, sem_consumer, sem_buffer;
-    int array_size, n_msg_received , n_msg_processed, n_producers, n_consumers, end;
+    int n_msg_received , n_msg_processed, n_producers, n_consumers, end;
     struct message_t messages[];
 };
 
