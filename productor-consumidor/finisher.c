@@ -43,13 +43,17 @@ int main(int argc, char *argv[]) {
     int errsv = errno;
     if (errsv == EEXIST) {
       printf("Si existe\n");
-      if ((fd = shm_open (shm_name, O_RDWR, 0)) == -1) {
-        printf("error %s ",strerror(errno));
+      if ((fd = shm_open (shm_name, O_RDWR, 0)) == -1) { 
         printf("Error opening shared-memory file descriptor.\n");
         exit(1);
       };
-
+    } else {
+      printf("Error opening shared-memory file descriptor.\n");
+      exit(1);
     };
+  } else {
+    printf("Error opening shared-memory file descriptor.\n");
+    exit(1);
   };
   printf("despues de shm open.\n");
   /* Map one page */
