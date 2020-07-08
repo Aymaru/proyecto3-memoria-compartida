@@ -50,6 +50,7 @@ int main(int argc, char *argv[]) {
     };
   } else {
     printf("Invalid option. Use: ./creator.o -s [Cantidad de Mensajes] -n [Nombre del buffer].\n");
+    exit(0);
   };
 
   buff = init_buffer(array_size);
