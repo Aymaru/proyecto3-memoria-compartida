@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
 
     for (int i=1;i<argc;i++) {
       if (strcmp(argv[i],"-s") == 0) { //Option Size
-        if ((array_size = atoi(argv[++i])) == 0){
+        if ((array_size = atoi(argv[++i])) == 0 || argv[i] == NULL){
           printf("Invalid size option. Please input an integer greater than 0.\n");
           exit(0);
         }
@@ -46,6 +46,7 @@ int main(int argc, char *argv[]) {
         //printf("Buffer name: %s\n", shm_name);
       } else { //default
         printf("Invalid Option. Use: ./creator.o -s [Cantidad de Mensajes] -n [Nombre del buffer].\n");
+        exit(0);
       };
     };
   } else {
