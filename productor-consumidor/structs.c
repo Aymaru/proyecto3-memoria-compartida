@@ -89,16 +89,16 @@ void print_message(struct message_t * msg, int msg_index) {
     printf("\n");
 };
 
-// int isEmpty (struct buffer_t * buff) {
-//     if (buff->n_msgs == 0) {
-//         return 1;
-//     };
-//     return 0;
-// };
+int isEmpty (struct buffer_t * buff) {
+    if ((buff->n_msg_received - buff->n_msg_processed) == 0) {
+        return 1;
+    }
+    return 0;
+};
 
-// int isFull (struct buffer_t * buff) {
-//     if (buff->n_msgs == buff->size-1) {
-//         return 1;
-//     };
-//     return 0;
-// };
+int isFull (struct buffer_t * buff) {
+    if ((buff->n_msg_received - buff->n_msg_processed) == buff->array_size) {
+        return 1;
+    }
+    return 0;
+};
