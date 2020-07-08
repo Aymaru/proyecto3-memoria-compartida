@@ -22,149 +22,149 @@
        MAIN CREADOR
 --------------------------*/
 int main(int argc, char *argv[]) {
-  
+
   char shm_name[25]; //Nombre del segmento de memoria compartida.
   struct buffer_t * buff,* shm_buffer; //Puntero para inicializar el buffer y puntero para mapear la memoria compartida usando mmap.
   size_t array_size; //Cantidad de mensajes del buffer
   int fd; //File descriptor de la memoria compartida
-  
-  if (argc >= 2) {  
+
+  if (argc >= 2) {
 
     for (int i=1;i<argc;i++) {
       if (strcmp(argv[i],"-s") == 0) { //Option Size
-        i++;
-        printf("size: %s\n", argv[i]);
-        array_size = atoi(argv[i]);
-
-
+        if (argv[++i] == NULL || (array_size = atoi(argv[i])) == 0){
+          printf("Invalid size option. Please input an integer greater than 0.\n");
+          exit(0);
+        }
+        //printf("Buffer size: %zu\n", array_size);
       } else if (strcmp(argv[i],"-n") == 0) { //Option Buffer Name
-        i++;
-        printf("buffer name: %s\n", argv[i]);
+        if (argv[++i] == NULL){
+          printf("Invalid buffer name. Please input a valid buffer name.\n");
+          exit(0);
+        }
         strcpy(shm_name, argv[i]);
-
+        //printf("Buffer name: %s\n", shm_name);
       } else { //default
         printf("Invalid Option. Use: ./creator.o -s [Cantidad de Mensajes] -n [Nombre del buffer].\n");
-
+        exit(0);
       };
-
     };
   } else {
-    printf("No sea puto.!\n"); //Si no lo quitamos, es culpa de garita.!
+    printf("Invalid option. Use: ./creator.o -s [Cantidad de Mensajes] -n [Nombre del buffer].\n");
+    exit(0);
   };
-  
+
   buff = init_buffer(array_size);
-  
+
   /* Create shared memory object */
 
-  fd = shm_open (shm_name, O_CREAT|O_RDWR, 0);
-  
+  fd = shm_open (shm_name, O_CREAT|O_RDWR, 0600);
+
   if((ftruncate(fd, sizeof(struct buffer_t) + (sizeof(struct message_t) * array_size) )) == -1) {    /* Set the size */
       perror("ftruncate failure");
       exit(1);
   }
-                                        
-  /* Map one page */
 
+  /* Map one page */
   shm_buffer = mmap(0, sizeof(struct buffer_t) + (sizeof(struct message_t) * array_size),
                     PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-  
+
   memcpy(shm_buffer,buff,sizeof(struct buffer_t) + (sizeof(struct message_t) * array_size));
   free_buffer(buff);
-  
+
   // pruebas con la memoria compartida, borrar este segmento.
   struct message_t * tmp_msg;
   int msg_index;
-  printf("Cantidad max de mensajes: %d\n",shm_buffer->array_size);
 
   print_buffer_status(shm_buffer);
 
   insert_msg(shm_buffer,1,2);
-  insert_msg(shm_buffer,2,1);
-  insert_msg(shm_buffer,3,4);
-  insert_msg(shm_buffer,4,0);
+  // insert_msg(shm_buffer,2,1);
+  // insert_msg(shm_buffer,3,4);
+  // insert_msg(shm_buffer,4,0);
 
-  print_buffer_status(shm_buffer);
+  // print_buffer_status(shm_buffer);
 
-  tmp_msg = get_msg(shm_buffer,&msg_index);
-  print_message(tmp_msg,msg_index);
-  free(tmp_msg);
+  // tmp_msg = get_msg(shm_buffer,&msg_index);
+  // print_message(tmp_msg,msg_index);
+  // free(tmp_msg);
 
-  print_buffer_status(shm_buffer);
+  // print_buffer_status(shm_buffer);
 
-  tmp_msg = get_msg(shm_buffer,&msg_index);
-  print_message(tmp_msg,msg_index);
-  free(tmp_msg);
+  // tmp_msg = get_msg(shm_buffer,&msg_index);
+  // print_message(tmp_msg,msg_index);
+  // free(tmp_msg);
 
-  print_buffer_status(shm_buffer);
+  // print_buffer_status(shm_buffer);
 
-  tmp_msg = get_msg(shm_buffer,&msg_index);
-  print_message(tmp_msg,msg_index);
-  free(tmp_msg);
+  // tmp_msg = get_msg(shm_buffer,&msg_index);
+  // print_message(tmp_msg,msg_index);
+  // free(tmp_msg);
 
-  print_buffer_status(shm_buffer);
+  // print_buffer_status(shm_buffer);
 
-  insert_msg(shm_buffer,11,4);
-  insert_msg(shm_buffer,15,3);
-  insert_msg(shm_buffer,13,2);
-  insert_msg(shm_buffer,14,1);
+  // insert_msg(shm_buffer,11,4);
+  // insert_msg(shm_buffer,15,3);
+  // insert_msg(shm_buffer,13,2);
+  // insert_msg(shm_buffer,14,1);
 
-  print_buffer_status(shm_buffer);
+  // print_buffer_status(shm_buffer);
 
-  tmp_msg = get_msg(shm_buffer,&msg_index);
-  print_message(tmp_msg,msg_index);
-  free(tmp_msg);
+  // tmp_msg = get_msg(shm_buffer,&msg_index);
+  // print_message(tmp_msg,msg_index);
+  // free(tmp_msg);
 
-  print_buffer_status(shm_buffer);
+  // print_buffer_status(shm_buffer);
 
-  tmp_msg = get_msg(shm_buffer,&msg_index);
-  print_message(tmp_msg,msg_index);
-  free(tmp_msg);
+  // tmp_msg = get_msg(shm_buffer,&msg_index);
+  // print_message(tmp_msg,msg_index);
+  // free(tmp_msg);
 
-  print_buffer_status(shm_buffer);
+  // print_buffer_status(shm_buffer);
 
-  tmp_msg = get_msg(shm_buffer,&msg_index);
-  print_message(tmp_msg,msg_index);
-  free(tmp_msg);
+  // tmp_msg = get_msg(shm_buffer,&msg_index);
+  // print_message(tmp_msg,msg_index);
+  // free(tmp_msg);
 
-  print_buffer_status(shm_buffer);
+  // print_buffer_status(shm_buffer);
 
-  insert_msg(shm_buffer,27,0);
-  insert_msg(shm_buffer,28,3);
-  insert_msg(shm_buffer,29,2);
+  // insert_msg(shm_buffer,27,0);
+  // insert_msg(shm_buffer,28,3);
+  // insert_msg(shm_buffer,29,2);
 
-  print_buffer_status(shm_buffer);
+  // print_buffer_status(shm_buffer);
 
-  tmp_msg = get_msg(shm_buffer,&msg_index);
-  print_message(tmp_msg,msg_index);
-  free(tmp_msg);
+  // tmp_msg = get_msg(shm_buffer,&msg_index);
+  // print_message(tmp_msg,msg_index);
+  // free(tmp_msg);
 
-  print_buffer_status(shm_buffer);
+  // print_buffer_status(shm_buffer);
 
-  tmp_msg = get_msg(shm_buffer,&msg_index);
-  print_message(tmp_msg,msg_index);
-  free(tmp_msg);
+  // tmp_msg = get_msg(shm_buffer,&msg_index);
+  // print_message(tmp_msg,msg_index);
+  // free(tmp_msg);
 
-  print_buffer_status(shm_buffer);
+  // print_buffer_status(shm_buffer);
 
-  tmp_msg = get_msg(shm_buffer,&msg_index);
-  print_message(tmp_msg,msg_index);
-  free(tmp_msg);
+  // tmp_msg = get_msg(shm_buffer,&msg_index);
+  // print_message(tmp_msg,msg_index);
+  // free(tmp_msg);
 
-  print_buffer_status(shm_buffer);
+  // print_buffer_status(shm_buffer);
 
-  tmp_msg = get_msg(shm_buffer,&msg_index);
-  print_message(tmp_msg,msg_index);
-  free(tmp_msg);
+  // tmp_msg = get_msg(shm_buffer,&msg_index);
+  // print_message(tmp_msg,msg_index);
+  // free(tmp_msg);
 
-  print_buffer_status(shm_buffer);
+  // print_buffer_status(shm_buffer);
 
-  tmp_msg = get_msg(shm_buffer,&msg_index);
-  print_message(tmp_msg,msg_index);
-  free(tmp_msg);
+  // tmp_msg = get_msg(shm_buffer,&msg_index);
+  // print_message(tmp_msg,msg_index);
+  // free(tmp_msg);
 
-  print_buffer_status(shm_buffer);
+  // print_buffer_status(shm_buffer);
 
-  
+
   // fin pruebas
 
   close(fd);                   /*   Close file   */
