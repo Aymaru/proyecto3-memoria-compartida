@@ -15,7 +15,8 @@ To-Do
    https://stackoverflow.com/questions/5656530/how-to-use-shared-memory-with-linux-in-c
 
 -------------------
-2.
+2. Consultas para el profe.
+ Que espera con que el finalizador describa cada accion realizada y las estadisticas de su gestion.
 -------------------
 3.
 -------------------

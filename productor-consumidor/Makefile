@@ -10,6 +10,10 @@ creator:
 	##./creator.o
 	## Compliar y ejecutar creador
 
+finisher:
+	gcc -o finisher.o finisher.c structs.c -lrt -pthread
+	## Compilar y ejecutar finalizador
+
 productor:
 	gcc -o productor.o productor.c
 	## Compilar y ejecutar productor
@@ -17,10 +21,6 @@ productor:
 consumidor:
 	gcc -o consumidor.o consumidor.c
 	## Compilar y ejecutar consumidor
-
-finalizador:
-	gcc -o finalizador.o finalizador.c
-	## Compilar y ejecutar finalizador
 
 clean:
 	rm -rf *.o *.bin *.elf

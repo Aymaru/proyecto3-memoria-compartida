@@ -72,7 +72,7 @@ struct message_t * get_msg(struct buffer_t * buff, int * index_msg) {
 
 void print_buffer_status(struct buffer_t * buff) {
     printf("Estado del buffer en memoria compartida:\n\n");
-    printf("Max cantidad de mensajes del buffer: %d.\n", buff->array_size);
+    printf("Max cantidad de mensajes del buffer: %ld.\n", buff->array_size);
     printf("Cantidad de mensajes en el buffer: %d.\n", buff->n_msg_received - buff->n_msg_processed);
     printf("Cantidad de mensajes recibidos: %d.\n", buff->n_msg_received);
     printf("Cantidad de mensajes procesados: %d.\n", buff->n_msg_processed);
