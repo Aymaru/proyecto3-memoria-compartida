@@ -3,7 +3,7 @@ cli_exec:
 	gcc -o creator.o creator.c structs.c -lrt -pthread
 	gcc -o finisher.o finisher.c structs.c -lrt -pthread
 	gcc -o producer.o producer.c structs.c -lrt -pthread
-	##gcc -o finalizador.o finalizador.c
+	gcc -o consumer.o consumer.c structs.c -lrt -pthread
 
 
 ## Compliar y ejecutar creador
@@ -19,8 +19,8 @@ producer:
 	gcc -o producer.o producer.c structs.c -lrt -pthread
 
 ## Compilar y ejecutar consumidor
-consumidor:
-	gcc -o consumidor.o consumidor.c
+consumer:
+	gcc -o consumer.o consumer.c structs.c -lrt -pthread
 
 clean:
 	rm -rf *.o *.bin *.elf
