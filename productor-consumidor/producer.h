@@ -10,6 +10,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <semaphore.h>
+#include <time.h>
 
 #include "structs.h"
 #endif
