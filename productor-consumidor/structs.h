@@ -7,6 +7,7 @@
 
 #include <time.h>
 #include <semaphore.h>
+#include <math.h>
 
 
 struct message_t {
@@ -28,12 +29,13 @@ int isEmpty(struct buffer_t * buff); //Devuelve 1 si no hay mensajes en el buffe
 int isFull(struct buffer_t * buff);
 
 void free_buffer(struct buffer_t * buff); //Libera la memoria reservada para la estructura de buffer
-
-int length(); //Es necesario? puede ser la cantidad de mensajes que permite el buffer, o la cantidad de mensajes que tiene actualmente el buffer
+void free_message(struct message_t * msg); //
 
 void insert_msg(struct buffer_t * buff, int id_producer, int key); //Agrega un msj al buffer
 struct message_t * get_msg(struct buffer_t * buff, int * index_msg); //Devuelve el siguiente mensaje del buffer
 
 void print_buffer_status(struct buffer_t * buff);
 void print_message(struct message_t * msg, int msg_index);
+
+double rand_expo(double lambda);
 #endif

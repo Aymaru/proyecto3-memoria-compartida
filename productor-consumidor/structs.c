@@ -44,6 +44,10 @@ void free_buffer(struct buffer_t * buff) {
     free(buff);
 };
 
+void free_message(struct message_t * msg) {
+    free(msg);
+};
+
 void insert_msg(struct buffer_t * buff, int id_producer, int key) { //
     int index;
     index = buff->n_msg_received % buff->array_size; //calculo el indice
@@ -102,3 +106,9 @@ int isFull (struct buffer_t * buff) {
     }
     return 0;
 };
+
+double rand_expo(double lambda) {
+    double u;
+    u = rand() / (RAND_MAX + 1.0);
+    return (-log(1- u) / lambda) * 1000000;
+}
