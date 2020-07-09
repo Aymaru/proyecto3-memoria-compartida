@@ -41,6 +41,8 @@ gettimeofday(&finishTime, NULL);
 + Waiting time:   (double) total_waiting_time/1000000
 + Working time:   (double) executionTime - Waiting time
 
+finisher: closing time //tiempo que espera mientras se cierran los productores y consumidores
+
 -------------------
 
 
