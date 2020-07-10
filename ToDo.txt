@@ -43,8 +43,32 @@ gettimeofday(&finishTime, NULL);
 
 finisher: closing time //tiempo que espera mientras se cierran los productores y consumidores
 
+Manejarlo desde struct
 -------------------
+5. Los productores y consumidores se pueden cerrar por diversos motivos.
+Ambos se cierran, cuando se ejecuta el finalizador o por una interrupcion que termine el proceso (Cuando se usa ctrl+c para cerrar un proceso, el SO le envia un SIGINT).
+Los consumidores tambien se cierran si leen un mensaje con key == PID % 5
 
+Para manejar el SIGINT enviado por ctl+c usamos sigaction()
+
+#include <signal.h>
+#include <stdlib.h>
+
+static bool keepRunning = true;
+
+void intHandler(int) {
+    keepRunning = false;
+}
+
+int main(int argc, char *argv[]) {
+    struct sigaction act;
+    act.sa_handler = intHandler;
+    sigaction(SIGINT, &act, NULL);
+
+    while (keepRunning) {
+        // main loop
+    }
+}
 
 NOTES
 + https://stackoverflow.com/questions/3738752/opening-a-terminal-from-linux-makefile
