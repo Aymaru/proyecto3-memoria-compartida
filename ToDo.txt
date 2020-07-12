@@ -54,11 +54,9 @@ Para manejar el SIGINT enviado por ctl+c usamos sigaction()
 #include <signal.h>
 #include <stdlib.h>
 
-static bool keepRunning = true;
+static volatile sig_atomic_t keep_running = 1;
 
-void intHandler(int) {
-    keepRunning = false;
-}
+
 
 int main(int argc, char *argv[]) {
     struct sigaction act;
@@ -69,6 +67,8 @@ int main(int argc, char *argv[]) {
         // main loop
     }
 }
+
+
 
 NOTES
 + https://stackoverflow.com/questions/3738752/opening-a-terminal-from-linux-makefile
