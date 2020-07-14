@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
   printf("      SHARED-MEMORY CREATOR\n");
   printf("--------------------------------\n");
 
-  printf("Creating shared-memory object with name %s and buffer size %d.\n", shm_name, array_size);
+  printf("Creating shared-memory object with name %s and buffer size %ld.\n", shm_name, array_size);
   if ((fd = shm_open (shm_name, O_CREAT|O_EXCL|O_RDWR, 0600)) == -1) { //Create shared-memory object.
       int errsv = errno;
       if (errsv == EEXIST) {
