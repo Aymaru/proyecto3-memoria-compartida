@@ -90,7 +90,6 @@ int main(int argc, char *argv[]) {
   //End of Critical Region
   sem_post(&shm_buffer->sem_producer); //Unlock producer sem
 
-
   useconds = (int)rand_expo(waiting_time);
   printf("Waiting %f seconds for first message.\n\n",(double) useconds/1000000);
   usleep(useconds); //Wait
