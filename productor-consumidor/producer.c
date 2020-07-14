@@ -3,7 +3,6 @@
 /*--------
   GLOBAL
 --------*/
-
 static volatile sig_atomic_t keep_running = 1;
 
 void handle_exit(int signal) {
@@ -31,9 +30,6 @@ int main(int argc, char *argv[]) {
   char * eptr;
   useconds_t useconds, waiting_useconds;
 
-  gettimeofday(&start_time, NULL);
-  srand(time(0));
-
   if (argc >= 2) {
     for (int i=1;i<argc;i++) {
       if (strcmp(argv[i],"-n") == 0) { //Option Buffer Name
@@ -58,6 +54,9 @@ int main(int argc, char *argv[]) {
     printf("Invalid option. Use: ./creator.o -s [Cantidad de Mensajes] -n [Nombre del buffer].\n");
     exit(EXIT_FAILURE);
   };
+
+  gettimeofday(&start_time, NULL);
+  srand(time(0));
 
   printf("--------------------------------\n");
   printf("    SHARED-MEMORY PRODUCER\n");
@@ -84,9 +83,9 @@ int main(int argc, char *argv[]) {
   //Accesing producers count
   sem_wait(&shm_buffer->sem_producer); //Lock producer sem
   //Critical Region
-  producer_id = shm_buffer->n_producers++;
+  shm_buffer->n_producers++;
+  producer_id = shm_buffer->total_producers++;
   printf("Starting producer: %d.\n\n",producer_id);
-  //print_buffer_status(shm_buffer);
   //End of Critical Region
   sem_post(&shm_buffer->sem_producer); //Unlock producer sem
 
@@ -102,14 +101,12 @@ int main(int argc, char *argv[]) {
     //Critical Region
     if (!isFull(shm_buffer)) {
       key = rand() % 5; //Generate random key
-      msg = insert_msg(shm_buffer,producer_id,key,&msg_index); //Insert msg into buffer
       printf("Message inserted in buffer correctly at index: %d.\n",msg_index);
+      msg = insert_msg(shm_buffer,producer_id,key,&msg_index); //Insert msg into buffer
       print_message(msg);
       free_message(msg);
-      //print_buffer_status(shm_buffer);
       n_sent_msg++;
     } else {
-      //print_buffer_status(shm_buffer);
       printf("Buffer full. Message not inserted.\n");
     }
     //End of Critical Region
@@ -132,7 +129,6 @@ int main(int argc, char *argv[]) {
   sem_wait(&shm_buffer->sem_producer); //Lock producer sem
   //Critical Region
   shm_buffer->n_producers--;
-  //print_buffer_status(shm_buffer);
   //End of Critical Region
   sem_post(&shm_buffer->sem_producer); //Unlock producer sem
 
@@ -150,9 +146,9 @@ int main(int argc, char *argv[]) {
 
   printf("\nTotal messages sent: %d\n", n_sent_msg);
 
-  printf("\nExecution time: %f seconds\n", execution_time);
-  printf("Waiting time: %f seconds\n", waiting_time);
-  printf("Working time: %f seconds\n", working_time);
+  printf("\nExecution time: %f seconds.\n", execution_time);
+  printf("Waiting time: %f seconds.\n", waiting_time);
+  printf("Working time: %f seconds.\n", working_time);
 
   exit(EXIT_SUCCESS);
 }

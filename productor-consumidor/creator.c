@@ -11,8 +11,6 @@ int main(int argc, char *argv[]) {
   double execution_time;
   int fd; //File descriptor de la memoria compartida
 
-  gettimeofday(&start_time, NULL);    //Inicia timer.
-
   if (argc >= 2) {
     for (int i=1;i<argc;i++) {
       if (strcmp(argv[i],"-s") == 0) { //Option Size
@@ -35,6 +33,8 @@ int main(int argc, char *argv[]) {
     printf("Invalid option. Use: ./creator.o -s [Cantidad de Mensajes] -n [Nombre del buffer].\n");
     exit(EXIT_FAILURE);
   };
+
+  gettimeofday(&start_time, NULL);    //Inicia timer.
 
   printf("--------------------------------\n");
   printf("      SHARED-MEMORY CREATOR\n");
@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
   printf("\n--------------------------------\n");
   printf("         CREATOR STATS\n");
   printf("--------------------------------\n");
-  printf("\nExecution time: %f seconds\n", execution_time);
+  printf("\nExecution time: %f seconds.\n", execution_time);
 
   exit(EXIT_SUCCESS);
 }

@@ -16,6 +16,8 @@ struct buffer_t * init_buffer(size_t array_size) {
     buff->n_msg_processed = 0;
     buff->n_consumers = 0;
     buff->n_producers = 0;
+    buff->total_consumers = 0;
+    buff->total_producers = 0;
     buff->end = 0; // flag to stop all producers and consumers
     for (size_t i = 0; i < array_size; ++i) {
         buff->messages[i].id_producer = -1;

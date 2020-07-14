@@ -3,7 +3,6 @@
 /*--------
   GLOBAL
 --------*/
-
 static volatile sig_atomic_t keep_running = 1;
 
 void handle_exit(int signal) {
@@ -30,7 +29,6 @@ int main(int argc, char *argv[]) {
   size_t size;
   useconds_t useconds, waiting_useconds;
 
-  gettimeofday(&start_time, NULL);
 
   if (argc >= 2) {
     for (int i=1;i<argc;i++) {
@@ -57,6 +55,8 @@ int main(int argc, char *argv[]) {
     exit(0);
   };
 
+  gettimeofday(&start_time, NULL);
+
   printf("--------------------------------\n");
   printf("    SHARED-MEMORY CONSUMER\n");
   printf("--------------------------------\n");
@@ -82,9 +82,9 @@ int main(int argc, char *argv[]) {
   //Accesing consumer count
   sem_wait(&shm_buffer->sem_consumer); //lock consumer sem
   //Critical Region
-  consumer_id = shm_buffer->n_consumers++;
+  shm_buffer->n_consumers++;
+  consumer_id = shm_buffer->total_consumers++;
   printf("Starting consumer: %d.\n\n",consumer_id);
-  //print_buffer_status(shm_buffer);
   //End of Critical Region
   sem_post(&shm_buffer->sem_consumer); //unlock consumer sem
 
@@ -100,7 +100,6 @@ int main(int argc, char *argv[]) {
     //Critical Region
     if (!isEmpty(shm_buffer)) {
       //Read message from buffer
-      //print_buffer_status(shm_buffer);
       msg = get_msg(shm_buffer,&msg_index);
       printf("Message read correctly from buffer index: %d.\n\n",msg_index);
       print_message(msg);
@@ -109,7 +108,6 @@ int main(int argc, char *argv[]) {
       n_read_msg++;
     } else {
       //Buffer is empty.
-      //print_buffer_status(shm_buffer);
       printf("Buffer empty. Not messages available.\n\n");
     }
     //End of Critical Region
@@ -133,7 +131,6 @@ int main(int argc, char *argv[]) {
   sem_wait(&shm_buffer->sem_consumer); //lock consumer sem
   //Critical Region
   shm_buffer->n_consumers--;
-  //print_buffer_status(shm_buffer);
   //End of Critical Region
   sem_post(&shm_buffer->sem_consumer); //unlock consumer sem
 
@@ -149,11 +146,11 @@ int main(int argc, char *argv[]) {
   printf("       CONSUMER %d STATS\n", consumer_id);
   printf("--------------------------------\n");
 
-  printf("Total messages sent: %d\n\n",n_read_msg);
+  printf("\nTotal messages read: %d\n\n",n_read_msg);
 
-  printf("\nExecution time: %f seconds\n", execution_time);
-  printf("Waiting time: %f seconds\n", waiting_time);
-  printf("Working time: %f seconds\n", working_time);
+  printf("\nExecution time: %f seconds.\n", execution_time);
+  printf("Waiting time: %f seconds.\n", waiting_time);
+  printf("Working time: %f seconds.\n", working_time);
 
   return 1;
 }
