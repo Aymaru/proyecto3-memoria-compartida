@@ -106,7 +106,7 @@ int main(int argc, char *argv[]) {
     sem_post(&shm_buffer->sem_buffer); //Unlock the buffer sem
     useconds = (int)rand_expo(waiting_time);
     waiting_useconds += useconds;
-    printf("Waiting %d seconds for next message.\n",(double) useconds/1000000);
+    printf("Waiting %f seconds for next message.\n",(double) useconds/1000000);
     usleep(useconds); //Wait
 
   }

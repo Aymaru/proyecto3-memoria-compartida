@@ -11,6 +11,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <semaphore.h>
+#include <signal.h>
 
 #include "structs.h"
 #endif

@@ -10,6 +10,11 @@
        MAIN FINALIZADOR
 --------------------------*/
 int main(int argc, char *argv[]) {
+  struct sigaction act;
+  act.sa_handler = SIG_IGN;
+  sigaction(SIGINT, &act, NULL);
+
+
   char shm_name[25]; //Nombre del segmento de memoria compartida.
   struct buffer_t * buff,* shm_buffer; //Puntero para inicializar el buffer y puntero para mapear la memoria compartida usando mmap.
   int fd; //File descriptor de la memoria compartida
@@ -76,7 +81,7 @@ int main(int argc, char *argv[]) {
     printf(".");
     sleep(1); // espera 1 s para volver a revisar.
   }; //Espera que se cierren todos los productores y consumidores
-  printf("STATS\n\n");
+  printf("\nSTATS\n\n");
   printf("Productores cerrados: %d.\n", n_producers);
   printf("Consumidores cerrados: %d.\n", n_consumers);
   close(fd); //Close shared-memory file descriptor
