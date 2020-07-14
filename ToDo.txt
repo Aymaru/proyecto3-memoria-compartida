@@ -68,7 +68,8 @@ int main(int argc, char *argv[]) {
     }
 }
 
-
+-------------------
+6. Dejar titulos bonitos.
 
 NOTES
 + https://stackoverflow.com/questions/3738752/opening-a-terminal-from-linux-makefile
