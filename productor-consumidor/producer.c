@@ -4,10 +4,20 @@
   GLOBAL
 --------*/
 
+static volatile sig_atomic_t keep_running = 1;
+
+void handle_exit(int signal) {
+  keep_running = 0;
+};
+
 /*--------------------------
        MAIN PRODUCTOR
 --------------------------*/
 int main(int argc, char *argv[]) {
+  struct sigaction act;
+  act.sa_handler = handle_exit;
+  sigaction(SIGINT, &act, NULL);
+
   char shm_name[25]; //Nombre del segmento de memoria compartida.
   struct buffer_t * buff,* shm_buffer; //Puntero para inicializar el buffer y puntero para mapear la memoria compartida usando mmap.
   int fd; //File descriptor de la memoria compartida
@@ -70,20 +80,21 @@ int main(int argc, char *argv[]) {
   print_buffer_status(shm_buffer);
   //End of Critical Region
   sem_post(&shm_buffer->sem_producer); //Unlock producer sem
+
   useconds = (int)rand_expo(waiting_time);
   waiting_useconds += useconds;
-  printf("Waiting %d microseconds for first message.\n",useconds);
+  printf("Waiting %f seconds for first message.\n",(double) useconds/1000000);
+  
   usleep(useconds); //Wait
-
-  while (!shm_buffer->end) //Do while not end
+  
+  while (!shm_buffer->end && keep_running) //Do while not end
   {
     //Accesing the buffer
     sem_wait(&shm_buffer->sem_buffer); //Lock the buffer sem
     //Critical Region
     if (!isFull(shm_buffer)) {
       key = rand() % 5; //Generate random key
-      msg_index = buff->n_msg_received % buff->array_size;
-      insert_msg(shm_buffer,producer_id,key); //Insert msg into buffer
+      insert_msg(shm_buffer,producer_id,key,&msg_index); //Insert msg into buffer
       printf("Message inserted in buffer correctly at indext: %d.\n",msg_index);
       print_buffer_status(shm_buffer);
       n_sent_msg++;
@@ -95,11 +106,19 @@ int main(int argc, char *argv[]) {
     sem_post(&shm_buffer->sem_buffer); //Unlock the buffer sem
     useconds = (int)rand_expo(waiting_time);
     waiting_useconds += useconds;
-    printf("Waiting %d microseconds for next message.\n",useconds);
+    printf("Waiting %d seconds for next message.\n",(double) useconds/1000000);
     usleep(useconds); //Wait
+
   }
   //End producer
+  if (!keep_running) {
+    printf("Producer stopped by user\n");
+  } else {
+    printf("Producer stopped by finisher\n");
+  }
+
   printf("Exiting producer: %d.\n",producer_id);
+
   printf("Sent Messages: %d\n\n",n_sent_msg);
   //Accesing producers count
   sem_wait(&shm_buffer->sem_producer); //Lock producer sem

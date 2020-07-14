@@ -8,9 +8,9 @@ struct buffer_t * init_buffer(size_t array_size) {
         printf("Error allocating memory for buffer\n");
         exit(1);
     };
-    sem_init(&(buff->sem_buffer), 1, 1); //semaforo del buffer, 1 = Es compartido entre procesos heavy weigth, 0 = valor inicial
-    sem_init(&(buff->sem_producer), 1, 1); //semaforo del productor, 1 = Es compartido entre procesos heavy weigth, 0 = valor inicial
-    sem_init(&(buff->sem_consumer), 1, 1); //semaforo del consumidor, 1 = Es compartido entre procesos heavy weigth, 0 = valor inicial
+    sem_init(&(buff->sem_buffer), 1, 1); //semaforo del buffer, 1 = Es compartido entre procesos heavy weigth, 1 = valor inicial
+    sem_init(&(buff->sem_producer), 1, 1); //semaforo del productor, 1 = Es compartido entre procesos heavy weigth, 1 = valor inicial
+    sem_init(&(buff->sem_consumer), 1, 1); //semaforo del consumidor, 1 = Es compartido entre procesos heavy weigth, 1 = valor inicial
     buff->array_size = array_size;
     buff->n_msg_received = 0;
     buff->n_msg_processed = 0;
@@ -48,12 +48,11 @@ void free_message(struct message_t * msg) {
     free(msg);
 };
 
-void insert_msg(struct buffer_t * buff, int id_producer, int key) { //
-    int index;
-    index = buff->n_msg_received % buff->array_size; //calculo el indice
-    buff->messages[index].id_producer = id_producer;
-    buff->messages[index].key = key;
-    time(&buff->messages[index].date);
+void insert_msg(struct buffer_t * buff, int id_producer, int key, int * index_msg) { //
+    *index_msg = buff->n_msg_received % buff->array_size; //calculo el indice
+    buff->messages[*index_msg].id_producer = id_producer;
+    buff->messages[*index_msg].key = key;
+    time(&buff->messages[*index_msg].date);
     buff->n_msg_received++;
 };
 

@@ -31,7 +31,7 @@ int isFull(struct buffer_t * buff);
 void free_buffer(struct buffer_t * buff); //Libera la memoria reservada para la estructura de buffer
 void free_message(struct message_t * msg); //
 
-void insert_msg(struct buffer_t * buff, int id_producer, int key); //Agrega un msj al buffer
+void insert_msg(struct buffer_t * buff, int id_producer, int key, int * index_msg); //Agrega un msj al buffer
 struct message_t * get_msg(struct buffer_t * buff, int * index_msg); //Devuelve el siguiente mensaje del buffer
 
 void print_buffer_status(struct buffer_t * buff);
