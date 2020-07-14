@@ -31,13 +31,13 @@ double strtodouble(char* value){
 
 #include <sys/time.h>
 
-struct timeval finishTime, startTime;
+struct timeval finish_time, start_time;
 
-gettimeofday(&startTime, NULL);
+gettimeofday(&start_time, NULL);
 //execute program
-gettimeofday(&finishTime, NULL);
+gettimeofday(&finish_time, NULL);
 
-+ Execution time: (double)(finishtTime - startTime)/1000000
++ Execution time: (double)(finisht_time - start_time)/1000000
 + Waiting time:   (double) total_waiting_time/1000000
 + Working time:   (double) executionTime - Waiting time
 

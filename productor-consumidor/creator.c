@@ -74,7 +74,12 @@ int main(int argc, char *argv[]) {
   close(fd);
 
   gettimeofday(&finish_time, NULL);
-  execution_time = (double)(finish_time.tv_usec - start_time.tv_usec)/1000000;
+  execution_time = (double)(finish_time.tv_usec - start_time.tv_usec)/1000000 +
+                   (double)(finish_time.tv_sec - start_time.tv_sec);
+
+  printf("\n--------------------------------\n");
+  printf("         CREATOR STATS\n");
+  printf("--------------------------------\n");
   printf("\nExecution time: %f seconds\n", execution_time);
 
   exit(EXIT_SUCCESS);

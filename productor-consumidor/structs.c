@@ -19,7 +19,7 @@ struct buffer_t * init_buffer(size_t array_size) {
     buff->end = 0; // flag to stop all producers and consumers
     for (size_t i = 0; i < array_size; ++i) {
         buff->messages[i].id_producer = -1;
-        buff->messages[i].key = -1;  
+        buff->messages[i].key = -1;
         time(&buff->messages[i].date);
     }
     return buff;
@@ -48,27 +48,32 @@ void free_message(struct message_t * msg) {
     free(msg);
 };
 
-void insert_msg(struct buffer_t * buff, int id_producer, int key, int * index_msg) { //
+struct message_t * insert_msg(struct buffer_t * buff, int id_producer, int key, int * index_msg) { //
     *index_msg = buff->n_msg_received % buff->array_size; //calculo el indice
     buff->messages[*index_msg].id_producer = id_producer;
     buff->messages[*index_msg].key = key;
     time(&buff->messages[*index_msg].date);
     buff->n_msg_received++;
+
+    struct message_t * msg;
+    msg = init_msg(id_producer, key, buff->messages[*index_msg].date);
+
+    return msg;
 };
 
 struct message_t * get_msg(struct buffer_t * buff, int * index_msg) {
     struct message_t * msg;
     int id_producer, key;
     time_t time;
-    
+
     int index;
     index = buff->n_msg_processed % buff->array_size;
     id_producer = buff->messages[index].id_producer;
     key = buff->messages[index].key;
-    time = buff->messages[index].date;   
+    time = buff->messages[index].date;
     msg = init_msg(id_producer,key,time);
     *index_msg = index;
-    
+
     buff->n_msg_processed++;
     return msg;
 };
@@ -83,12 +88,16 @@ void print_buffer_status(struct buffer_t * buff) {
     printf("Cantidad de consumidores activos: %d.\n\n", buff->n_consumers);
 };
 
-void print_message(struct message_t * msg, int msg_index) {
-    printf("Informacion del mensaje:\n");
-    printf("Leido del indice %d del buffer.\n",msg_index); //Se le puede sumar 1, para mostrar los indices empezando desde 1 y no desde 0. Se ve mas bonito ????
-    printf("Id del productor: %d\n",msg->id_producer);
-    printf("Llave aleatoria: %d\n",msg->key);
-    //printf("Fecha: ?", ?msg->date?) // imprimir tiempo, no se como se imprime, me dio pereza buscar
+void print_message(struct message_t * msg) {
+    char buff[100];
+
+    printf("MESSAGE INFORMATION\n");
+    printf("\tProducer Id: %d\n",msg->id_producer);
+    printf("\tRandom Key: %d\n",msg->key);
+
+    strftime (buff, 100, "%Y-%m-%d %H:%M:%S.000", localtime (&msg->date));
+    printf("\tTimestamp: %s\n", buff);
+
     printf("\n");
 };
 
