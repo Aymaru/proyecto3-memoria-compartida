@@ -18,7 +18,7 @@ struct message_t {
 struct buffer_t {
     size_t array_size;
     sem_t sem_producer, sem_consumer, sem_buffer;
-    int n_msg_received , n_msg_processed, n_producers, n_consumers, end;
+    int n_msg_received , n_msg_processed, n_producers, n_consumers, total_producers, total_consumers, end;
     struct message_t messages[];
 };
 
@@ -31,11 +31,11 @@ int isFull(struct buffer_t * buff);
 void free_buffer(struct buffer_t * buff); //Libera la memoria reservada para la estructura de buffer
 void free_message(struct message_t * msg); //
 
-void insert_msg(struct buffer_t * buff, int id_producer, int key, int * index_msg); //Agrega un msj al buffer
+struct message_t * insert_msg(struct buffer_t * buff, int id_producer, int key, int * index_msg); //Agrega un msj al buffer
 struct message_t * get_msg(struct buffer_t * buff, int * index_msg); //Devuelve el siguiente mensaje del buffer
 
 void print_buffer_status(struct buffer_t * buff);
-void print_message(struct message_t * msg, int msg_index);
+void print_message(struct message_t * msg);
 
 double rand_expo(double lambda);
 #endif
