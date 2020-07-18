@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
   //End of Critical Region
   sem_post(&shm_buffer->sem_consumer); //unlock consumer sem
 
-  useconds = (int)rand_expo(waiting_time); //Wait
+  useconds += (int)rand_expo(waiting_time); //Wait
   printf("Waiting %f seconds for first message.\n\n",(double) useconds/1000000);
   usleep(useconds); //Wait
   waiting_useconds += useconds;
@@ -106,19 +106,20 @@ int main(int argc, char *argv[]) {
       if ((getpid() % 5) == msg->key ) stop_by_key = 1;
       free_message(msg);
       n_read_msg++;
+      useconds = 0.0;
     } else {
       //Buffer is empty.
       printf("Buffer empty. Not messages available.\n\n");
     }
     //End of Critical Region
     sem_post(&shm_buffer->sem_buffer); //Unlock the buffer sem
-    useconds = (int)rand_expo(waiting_time); //Wait
-    printf("Waiting %f seconds for first message.\n\n",(double) useconds/1000000);
+    useconds += (int)rand_expo(waiting_time); //Wait
+    printf("Waiting %f seconds for next message.\n\n",(double) useconds/1000000);
     usleep(useconds); //Wait
     waiting_useconds += useconds;
   }
 
-  if (!keep_running) {
+  if (!keep_running) { next
     printf(" Interruption.\nConsumer stopped by user.\n");
   } else if (shm_buffer->end) {
     printf("Consumer stopped by finisher.\n");
