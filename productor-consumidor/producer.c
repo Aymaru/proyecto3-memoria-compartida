@@ -106,7 +106,7 @@ int main(int argc, char *argv[]) {
       print_message(msg);
       free_message(msg);
       n_sent_msg++;
-      u_seconds = 0.0;
+      useconds = 0.0;
     } else {
       printf("Buffer full. Message not inserted.\n");
     }
@@ -120,6 +120,7 @@ int main(int argc, char *argv[]) {
   //End producer
   if (!keep_running) {
     printf(" Interruption\nProducer stopped by user.\n");
+    waiting_useconds -= useconds;
   } else {
     printf("Producer stopped by finisher.\n");
   }

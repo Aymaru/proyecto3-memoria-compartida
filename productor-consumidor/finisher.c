@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
   printf("\n ... Exiting producers and consumers ... \n");
 
   while(shm_buffer->n_producers != 0 || shm_buffer->n_consumers != 0) {
-    printf("...\n");
+    printf(" ...\n");
     sleep(1); // espera 1 s para volver a revisar.
   }; //Espera que se cierren todos los productores y consumidores
 

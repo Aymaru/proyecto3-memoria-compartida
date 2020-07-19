@@ -119,8 +119,9 @@ int main(int argc, char *argv[]) {
     waiting_useconds += useconds;
   }
 
-  if (!keep_running) { next
+  if (!keep_running) {
     printf(" Interruption.\nConsumer stopped by user.\n");
+    waiting_useconds -= useconds;
   } else if (shm_buffer->end) {
     printf("Consumer stopped by finisher.\n");
   } else  {
