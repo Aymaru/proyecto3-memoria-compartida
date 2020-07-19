@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
   //End of Critical Region
   sem_post(&shm_buffer->sem_producer); //Unlock producer sem
 
-  useconds = (int)rand_expo(waiting_time);
+  useconds += (int)rand_expo(waiting_time);
   printf("Waiting %f seconds for first message.\n\n",(double) useconds/1000000);
   usleep(useconds); //Wait
   waiting_useconds += useconds;
@@ -106,12 +106,13 @@ int main(int argc, char *argv[]) {
       print_message(msg);
       free_message(msg);
       n_sent_msg++;
+      useconds = 0.0;
     } else {
       printf("Buffer full. Message not inserted.\n");
     }
     //End of Critical Region
     sem_post(&shm_buffer->sem_buffer); //Unlock the buffer sem
-    useconds = (int)rand_expo(waiting_time);
+    useconds += (int)rand_expo(waiting_time);
     printf("Waiting %f seconds for next message.\n\n",(double) useconds/1000000);
     usleep(useconds); //Wait
     waiting_useconds += useconds;
@@ -119,6 +120,7 @@ int main(int argc, char *argv[]) {
   //End producer
   if (!keep_running) {
     printf(" Interruption\nProducer stopped by user.\n");
+    waiting_useconds -= useconds;
   } else {
     printf("Producer stopped by finisher.\n");
   }
