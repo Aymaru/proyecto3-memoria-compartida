@@ -78,6 +78,7 @@ int main(int argc, char *argv[]) {
   n_read_msg = 0;
   stop_by_key = 0;      //Flag to stop consumer if key match PID % 5
   waiting_useconds = 0;
+  useconds = 0;
 
   //Accesing consumer count
   sem_wait(&shm_buffer->sem_consumer); //lock consumer sem

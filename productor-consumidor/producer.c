@@ -79,6 +79,7 @@ int main(int argc, char *argv[]) {
 
   n_sent_msg = 0;
   waiting_useconds = 0;
+  useconds = 0;
 
   //Accesing producers count
   sem_wait(&shm_buffer->sem_producer); //Lock producer sem
