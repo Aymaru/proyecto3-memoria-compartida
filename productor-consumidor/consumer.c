@@ -46,12 +46,12 @@ int main(int argc, char *argv[]) {
         }
 
       } else { //default
-        printf("Invalid Option. Use: ./producer.o -n [Nombre del buffer] -t [Waiting time].\n");
+        printf("Invalid Option. Use: ./consumer.o -n [Nombre del buffer] -t [Waiting time].\n");
         exit(0);
       };
     };
   } else {
-    printf("Invalid option. Use: ./creator.o -s [Cantidad de Mensajes] -n [Nombre del buffer].\n");
+    printf("Invalid option. Use: ./consumer.o -n [Nombre del buffer] -t [Waiting time].\n");
     exit(0);
   };
 

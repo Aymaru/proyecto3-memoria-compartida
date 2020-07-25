@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
       };
     };
   } else {
-    printf("Invalid option. Use: ./creator.o -s [Cantidad de Mensajes] -n [Nombre del buffer].\n");
+    printf("Invalid option. Use: Use: ./producer.o -n [Nombre del buffer] -t [Waiting time].\n");
     exit(EXIT_FAILURE);
   };
 
